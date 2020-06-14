@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertimelapse/counter_bloc.dart';
+import 'package:fluttertimelapse/counter_event.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,18 +31,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final _bloc = CounterBloc();
 
-  void _incrementalCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-  void _decrementalCounter() {
-    setState(() {
-      _counter--;
-    });
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,27 +40,33 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-            mainAxisAlignment:MainAxisAlignment.center,
-            children: <Widget>[
-          Text("Vegades apretades"),
-          Text(
-              "$_counter",
-          style: Theme.of(context).textTheme.display1,
-          )
-        ]),
+        child: StreamBuilder(
+          stream: _bloc.counter,
+          initialData: 0,
+          builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+            return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text("Vegades apretades"),
+                  Text(
+                    "${snapshot.data}",
+                    style: Theme.of(context).textTheme.display1,
+                  )
+                ]);
+          },
+        ),
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           FloatingActionButton(
-            onPressed: () => _incrementalCounter(),
+            onPressed: () => () => _bloc.counterEvent.add(IncrementEvent()),
             tooltip: 'Increment',
             child: Icon(Icons.add),
           ),
-          SizedBox(width:10),
+          SizedBox(width: 10),
           FloatingActionButton(
-            onPressed: () => _decrementalCounter(),
+            onPressed: () => () => _bloc.counterEvent.add(DecrementEvent()),
             tooltip: 'Decrement',
             child: Icon(Icons.remove),
           )
@@ -77,5 +75,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-
