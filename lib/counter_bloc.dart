@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'counter_event.dart';
-
+// https://www.youtube.com/watch?v=oxeYeMHVLII
+// https://resocoder.com/2019/01/05/flutter-bloc-pattern-tutorial-from-scratch/
 class CounterBloc {
   int _counter = 0;
 
