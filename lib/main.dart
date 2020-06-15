@@ -60,18 +60,24 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           FloatingActionButton(
-            onPressed: () => () => _bloc.counterEvent.add(IncrementEvent()),
+            onPressed: () => _bloc.counterEventSink.add(IncrementEvent()),
             tooltip: 'Increment',
             child: Icon(Icons.add),
           ),
           SizedBox(width: 10),
           FloatingActionButton(
-            onPressed: () => () => _bloc.counterEvent.add(DecrementEvent()),
+            onPressed: () => _bloc.counterEventSink.add(DecrementEvent()),
             tooltip: 'Decrement',
             child: Icon(Icons.remove),
           )
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.dispose();
   }
 }
